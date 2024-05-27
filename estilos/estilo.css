@@ -101,6 +101,7 @@ div.gallery {
   float: inline-start; 
   width: 360px;
   align-items: center;
+  transition: 0.5s;
 }
 
 div.gallery:hover {
@@ -134,12 +135,13 @@ div.desc {
   font-weight: bold;
   padding: 10px 20px;
   cursor: pointer;
+  transition-duration: 0.5s;
+  border: 1px solid #34ab1e;
 }
 
 .ver-mas-btn:hover {
   background-color: #ffffff; /* Color de fondo cuando se pasa el ratón por encima */
   color: #34ab1e;
-  border: 1px solid #34ab1e;
 }
 
 section {
