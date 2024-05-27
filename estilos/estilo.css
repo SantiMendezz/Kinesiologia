@@ -329,18 +329,16 @@ color: #F7EEDD;
   }
 
   form {
-    padding: 100px;
-    margin: 103px;
-    box-shadow: 0 2px 5px #f5f5f5; 
+    margin: 1rem;
+    /* box-shadow: 0 2px 5px #f5f5f5; 
     background: #f5f5f5; 
-    background-color: #f5f5f5;
+    background-color: #f5f5f5; */
     }
   
     input,textarea {
-      width: calc(100% - 18px);
-      padding: 8px;
-      margin-bottom: 20px;
-      border: 1px solid #1cc91c;
+      padding: 0.4rem;
+      margin-bottom: 1rem;
+      border: 1px solid;
       outline: none;
       }
 
@@ -379,4 +377,57 @@ color: #F7EEDD;
     .destino {
         width: 100%;
     }
+}
+
+/* Contacto */
+.container-form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2rem;
+}
+.form-contacto {
+  width: 100%; /* Ajusta el ancho del formulario según sea necesario */
+  max-width: 600px; /* Ancho máximo del formulario */
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+}
+
+label, input, textarea, select {
+  display: block;
+  width: 100%;
+}
+
+.container-form form h2 {
+  text-align: center;
+}
+.container-form form > div {
+  display: flex;
+  text-align: center;
+  justify-content: center;
+}
+.provincia {
+  margin: 1rem 0rem;
+  display: block;
+}
+.form-contacto input[type="radio"] {
+  width: 2.5rem;
+}
+.form-contacto input[type="submit"] {
+  background-color: #000;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 20px;
+  margin-top: 1rem;
+}
+
+.warnings {
+  width: 12rem;
+  text-align: center;
+  margin: auto;
+  color: #B06AB3;
+  padding-top: 20px;
 }
