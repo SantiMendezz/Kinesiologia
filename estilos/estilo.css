@@ -410,6 +410,10 @@ label, input, textarea, select {
   width: 100%;
 }
 
+.form-contacto  img {
+  height: 5.5rem;
+  width: 5.5rem;
+}
 .container-form form h2 {
   text-align: center;
 }
