@@ -431,3 +431,56 @@ label, input, textarea, select {
   color: #B06AB3;
   padding-top: 20px;
 }
+
+/* QUIENES SOMOS */
+.title-quienes-somos {
+  text-align: center;
+  margin: 2rem 0rem;
+}
+
+.container-quienes-somos {
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  align-items: center;
+  justify-content: center;
+  padding: 0 10%;
+}
+.container-quienes-somos p {
+  margin: 0rem 0.5rem;
+}
+.container-quienes-somos img {
+  height: 20rem;
+  width: 100%;
+  object-fit: cover;
+}
+
+@media screen and (max-width: 1024px) {
+  .container-quienes-somos img {
+    height: 15rem;
+  }
+}
+@media screen and (max-width: 768px) {
+  .container-quienes-somos img {
+    height: 10rem;
+  }
+}
+@media screen and (max-width: 480px) {
+  .container-quienes-somos {
+    grid-template-columns: 1fr;
+  }
+  .container-quienes-somos img {
+    margin: 0.5rem 0;
+  }
+  #item1-qs {
+    order: 2;
+  }
+  #item2-qs {
+    order: 1;
+  }
+  #item5-qs {
+    order: 6;
+  }
+  #item6-qs {
+    order: 5;
+  }
+}
