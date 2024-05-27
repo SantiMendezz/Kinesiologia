@@ -210,7 +210,14 @@ footer {
 }
 .mapa {
   height: 200px;
+  width: 300px;
   margin-top: 1rem;
+}
+@media screen and (min-width:768px) {
+  .mapa {
+    width: 600px;
+    height: 350px;
+  }
 }
 .sede-principal div {
   display: flex;
