@@ -118,6 +118,10 @@ div.desc {
   text-align: center;
 }
 
+div.desc p{
+  margin: 0.5rem 0rem;
+}
+
 .flex-container {
   display: flex;
   flex-wrap: wrap;
@@ -210,10 +214,12 @@ footer {
   background-color: #000;
   padding: 1rem 0rem;
 }
+.sede-principal p {
+  margin: 0.5rem;
+}
 .mapa {
   height: 200px;
   width: 300px;
-  margin-top: 1rem;
 }
 @media screen and (min-width:768px) {
   .mapa {
