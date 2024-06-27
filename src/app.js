@@ -1,6 +1,16 @@
 const express = require('express'); // Importa el módulo express => en una funcion
 const app = express(); // Crea una aplicación express => instanciacion de la funcion express en la variable app
 const path = require('path'); //Se encarga de normalizar rutas
+const { initializeDatabase } = require('./db/db');
+
+// Conexión con la base de datos e inicialización
+initializeDatabase()
+    .then(() => {
+        console.log('Inicialización de la base de datos completada.');
+    })
+    .catch((err) => {
+        console.error('Error durante la inicialización de la base de datos:', err);
+    });
 
 //Middleware para servir archivos estáticos
 app.use(express.static(path.join(__dirname, '../public')));
