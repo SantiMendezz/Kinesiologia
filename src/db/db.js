@@ -4,22 +4,46 @@ const mysql2 = require('mysql2');
 const conexion = mysql2.createConnection({
     host: 'localhost',
     user: 'root',
-    password: '123456'
+    password: '123456',
+    database: 'kinesiologia_db'
 });
 
-// Función para crear una tabla
-function createTable(query, tableName) {
+// Función para verificar si una tabla existe
+function tableExists(tableName) {
     return new Promise((resolve, reject) => {
+        const query = `SHOW TABLES LIKE '${tableName}';`;
         conexion.query(query, (err, results) => {
             if (err) {
-                console.error(`Error creando la tabla ${tableName}:`, err);
                 reject(err);
                 return;
             }
-            console.log(`Tabla ${tableName} asegurada - Creada exitosamente`);
-            resolve(results);
+            resolve(results.length > 0);
         });
     });
+}
+
+// Función para crear una tabla si no existe
+async function createTable(query, tableName) {
+    try {
+        const exists = await tableExists(tableName);
+        if (exists) {
+            console.log(`Tabla ${tableName} ya existe`);
+        } else {
+            await new Promise((resolve, reject) => {
+                conexion.query(query, (err, results) => {
+                    if (err) {
+                        console.error(`Error creando la tabla ${tableName}:`, err);
+                        reject(err);
+                        return;
+                    }
+                    console.log(`Tabla ${tableName} asegurada - Creada exitosamente`);
+                    resolve(results);
+                });
+            });
+        }
+    } catch (err) {
+        console.error(`Error al verificar/crear la tabla ${tableName}:`, err);
+    }
 }
 
 // Función para cambiar la base de datos
@@ -62,7 +86,7 @@ async function initializeDatabase() {
         const tableQueries = [
             {
                 query: `
-                    CREATE TABLE IF NOT EXISTS sexo (
+                    CREATE TABLE sexo (
                         sexo_id INT AUTO_INCREMENT PRIMARY KEY,
                         sexo_descripcion VARCHAR(50) NOT NULL
                     );`,
@@ -70,7 +94,7 @@ async function initializeDatabase() {
             },
             {
                 query: `
-                    CREATE TABLE IF NOT EXISTS contacto (
+                    CREATE TABLE contacto (
                         contacto_id INT AUTO_INCREMENT PRIMARY KEY,
                         id_sexo INT NOT NULL,
                         contacto_nombre VARCHAR(50) NOT NULL,
@@ -86,7 +110,7 @@ async function initializeDatabase() {
             },
             {
                 query: `
-                    CREATE TABLE IF NOT EXISTS kinesiologo (
+                    CREATE TABLE kinesiologo (
                         kinesiologo_id INT AUTO_INCREMENT PRIMARY KEY,
                         kinesiologo_nombre VARCHAR(50) NOT NULL,
                         kinesiologo_apellido VARCHAR(50) NOT NULL,
@@ -97,7 +121,7 @@ async function initializeDatabase() {
             },
             {
                 query: `
-                    CREATE TABLE IF NOT EXISTS rol (
+                    CREATE TABLE rol (
                         rol_id INT AUTO_INCREMENT PRIMARY KEY,
                         rol_descripcion VARCHAR(50) NOT NULL
                     );`,
@@ -105,7 +129,7 @@ async function initializeDatabase() {
             },
             {
                 query: `
-                    CREATE TABLE IF NOT EXISTS usuario (
+                    CREATE TABLE usuario (
                         usuario_id INT AUTO_INCREMENT PRIMARY KEY,
                         usuario_nombre VARCHAR(50) NOT NULL,
                         usuario_apellido VARCHAR(50) NOT NULL,
@@ -123,7 +147,7 @@ async function initializeDatabase() {
             },
             {
                 query: `
-                    CREATE TABLE IF NOT EXISTS turno (
+                    CREATE TABLE turno (
                         turno_id INT AUTO_INCREMENT PRIMARY KEY,
                         id_paciente INT NOT NULL,
                         id_kinesiologo INT NOT NULL,
