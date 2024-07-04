@@ -503,3 +503,16 @@ label, input, textarea, select {
     order: 5;
   }
 }
+
+/* Register */
+.pregunta-registro {
+  display: flex;
+  text-align: center;
+}
+.pregunta-registro a {
+  text-decoration: none;
+  color: #008DDA;
+}
+.pregunta-registro a:hover {
+  text-decoration: underline;
+}

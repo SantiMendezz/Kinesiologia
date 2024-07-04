@@ -12,7 +12,19 @@ controller.contactanos = (req, res) => {
 };
 //Ruta quienesSomos
 controller.quienesSomos = (req,res) => {
-    res.sendFile(path.join(__dirnmae, '../../public/quienesSomos.html'));
+    res.sendFile(path.join(__dirname, '../../public/quienesSomos.html'));
+};
+//Ruta register
+controller.register = (req,res) => {
+    res.sendFile(path.join(__dirname, '../../public/register.html'));
+};
+//Ruta login
+controller.login = (req,res) => {
+    res.sendFile(path.join(__dirname, '../../public/login.html'));
+};
+//Ruta admin
+controller.admin = (req,res) => {
+    res.sendFile(path.join(__dirname, '../../public/admin/admin.html'));
 };
 
 module.exports = controller;

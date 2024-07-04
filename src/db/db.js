@@ -1,92 +1,80 @@
-const mysql2 = require('mysql2');
+const mysql = require('mysql2/promise');
 
-// Datos para la conexión con la DB
-const conexion = mysql2.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '123456',
-    database: 'kinesiologia_db'
-});
-
-// Función para verificar si una tabla existe
-function tableExists(tableName) {
-    return new Promise((resolve, reject) => {
-        const query = `SHOW TABLES LIKE '${tableName}';`;
-        conexion.query(query, (err, results) => {
-            if (err) {
-                reject(err);
-                return;
-            }
-            resolve(results.length > 0);
-        });
-    });
-}
-
-// Función para crear una tabla si no existe
-async function createTable(query, tableName) {
+async function createDatabase(databaseName) {
     try {
-        const exists = await tableExists(tableName);
-        if (exists) {
-            console.log(`Tabla ${tableName} ya existe`);
-        } else {
-            await new Promise((resolve, reject) => {
-                conexion.query(query, (err, results) => {
-                    if (err) {
-                        console.error(`Error creando la tabla ${tableName}:`, err);
-                        reject(err);
-                        return;
-                    }
-                    console.log(`Tabla ${tableName} asegurada - Creada exitosamente`);
-                    resolve(results);
-                });
-            });
-        }
+        const connection = await mysql.createConnection({
+            host: 'localhost',
+            user: 'root',
+            password: '123456',
+            port: 3307
+        });
+        await connection.query(`CREATE DATABASE IF NOT EXISTS ${databaseName}`);
+        console.log(`Base de datos ${databaseName} asegurada - Creada exitosamente`);
+        await connection.end();
     } catch (err) {
-        console.error(`Error al verificar/crear la tabla ${tableName}:`, err);
+        console.error(`Error creando la base de datos ${databaseName}:`, err);
+        throw err;
     }
 }
 
-// Función para cambiar la base de datos
-function changeDatabase(databaseName) {
-    return new Promise((resolve, reject) => {
-        conexion.changeUser({ database: databaseName }, (err) => {
-            if (err) {
-                console.error(`Error al cambiar a la base de datos ${databaseName}:`, err);
-                reject(err);
-                return;
-            }
-            console.log(`Cambiado a la base de datos ${databaseName}`);
-            resolve();
-        });
-    });
+// Función para verificar si una tabla existe
+async function tableExists(connection, tableName) {
+    const query = `SHOW TABLES LIKE '${tableName}';`;
+    const [results] = await connection.query(query);
+    return results.length > 0;
+}
+
+// Función para crear una tabla si no existe
+async function createTable(connection, query, tableName) {
+    try {
+        const exists = await tableExists(connection, tableName);
+        if (exists) {
+            console.log(`Tabla ${tableName} ya existe`);
+        } else {
+            await connection.query(query);
+            console.log(`Tabla ${tableName} asegurada - Creada exitosamente`);
+        }
+    } catch (err) {
+        console.error(`Error al verificar/crear la tabla ${tableName}:`, err);
+        throw err;
+    }
 }
 
 // Función para listar las bases de datos
-function listDatabases() {
-    return new Promise((resolve, reject) => {
-        conexion.query('SHOW DATABASES;', (err, results) => {
-            if (err) {
-                reject(err);
-                return;
-            }
-            resolve(results);
-        });
-    });
+async function listDatabases(connection) {
+    const [results] = await connection.query('SHOW DATABASES;');
+    return results;
 }
 
 // Función para inicializar la base de datos
 async function initializeDatabase() {
+    const databaseName = 'kinesiologia_db';
+    let connection;
+    
     try {
-        await createTable('CREATE DATABASE IF NOT EXISTS kinesiologia_db', 'kinesiologia_db');
-        const databases = await listDatabases();
+        // Crear la base de datos si no existe
+        await createDatabase(databaseName);
+
+        // Crear una nueva conexión utilizando la base de datos
+        connection = await mysql.createConnection({
+            host: 'localhost',
+            user: 'root',
+            password: '123456',
+            port: 3307,
+            database: databaseName
+        });
+
+        console.log(`Cambiado a la base de datos ${databaseName}`);
+
+        // Listar las bases de datos
+        const databases = await listDatabases(connection);
         console.log('Bases de datos disponibles:', databases);
-        await changeDatabase('kinesiologia_db');
 
         // Definición de los queries de creación de tablas
         const tableQueries = [
             {
                 query: `
-                    CREATE TABLE sexo (
+                    CREATE TABLE IF NOT EXISTS sexo (
                         sexo_id INT AUTO_INCREMENT PRIMARY KEY,
                         sexo_descripcion VARCHAR(50) NOT NULL
                     );`,
@@ -94,7 +82,7 @@ async function initializeDatabase() {
             },
             {
                 query: `
-                    CREATE TABLE contacto (
+                    CREATE TABLE IF NOT EXISTS contacto (
                         contacto_id INT AUTO_INCREMENT PRIMARY KEY,
                         id_sexo INT NOT NULL,
                         contacto_nombre VARCHAR(50) NOT NULL,
@@ -110,7 +98,7 @@ async function initializeDatabase() {
             },
             {
                 query: `
-                    CREATE TABLE kinesiologo (
+                    CREATE TABLE IF NOT EXISTS kinesiologo (
                         kinesiologo_id INT AUTO_INCREMENT PRIMARY KEY,
                         kinesiologo_nombre VARCHAR(50) NOT NULL,
                         kinesiologo_apellido VARCHAR(50) NOT NULL,
@@ -121,7 +109,7 @@ async function initializeDatabase() {
             },
             {
                 query: `
-                    CREATE TABLE rol (
+                    CREATE TABLE IF NOT EXISTS rol (
                         rol_id INT AUTO_INCREMENT PRIMARY KEY,
                         rol_descripcion VARCHAR(50) NOT NULL
                     );`,
@@ -129,15 +117,13 @@ async function initializeDatabase() {
             },
             {
                 query: `
-                    CREATE TABLE usuario (
+                    CREATE TABLE IF NOT EXISTS usuario (
                         usuario_id INT AUTO_INCREMENT PRIMARY KEY,
                         usuario_nombre VARCHAR(50) NOT NULL,
                         usuario_apellido VARCHAR(50) NOT NULL,
                         usuario_email VARCHAR(100) NOT NULL,
                         usuario_contrasenia VARCHAR(100) NOT NULL,
                         usuario_telefono BIGINT NOT NULL,
-                        usuario_provincia VARCHAR(100) NOT NULL,
-                        usuario_localidad VARCHAR(100) NOT NULL,
                         id_sexo INT NOT NULL,
                         id_rol INT NOT NULL,
                         FOREIGN KEY (id_sexo) REFERENCES sexo(sexo_id),
@@ -147,7 +133,7 @@ async function initializeDatabase() {
             },
             {
                 query: `
-                    CREATE TABLE turno (
+                    CREATE TABLE IF NOT EXISTS turno (
                         turno_id INT AUTO_INCREMENT PRIMARY KEY,
                         id_paciente INT NOT NULL,
                         id_kinesiologo INT NOT NULL,
@@ -159,14 +145,14 @@ async function initializeDatabase() {
 
         // Creación de las tablas
         for (let table of tableQueries) {
-            await createTable(table.query, table.name);
+            await createTable(connection, table.query, table.name);
         }
 
         console.log('Todas las tablas han sido creadas exitosamente');
     } catch (error) {
         console.error('Ocurrió un error durante la creación de las tablas:', error);
     } finally {
-        conexion.end();
+        if (connection) await connection.end();
     }
 }
 
