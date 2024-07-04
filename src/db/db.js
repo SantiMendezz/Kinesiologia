@@ -90,8 +90,6 @@ async function initializeDatabase() {
                         contacto_email VARCHAR(100) NOT NULL,
                         contacto_telefono BIGINT NOT NULL,
                         contacto_mensaje VARCHAR(240) NOT NULL,
-                        contacto_provincia VARCHAR(100) NOT NULL,
-                        contacto_municipio VARCHAR(100) NOT NULL,
                         FOREIGN KEY (id_sexo) REFERENCES sexo(sexo_id)
                     );`,
                 name: 'contacto'
@@ -137,7 +135,9 @@ async function initializeDatabase() {
                         turno_id INT AUTO_INCREMENT PRIMARY KEY,
                         id_paciente INT NOT NULL,
                         id_kinesiologo INT NOT NULL,
-                        turno_fecha DATE NOT NULL
+                        turno_fecha DATE NOT NULL,
+                        FOREIGN KEY (id_paciente) REFERENCES usuario(usuario_id),
+                        FOREIGN KEY (id_kinesiologo) REFERENCES kinesiologo(kinesiologo_id)
                     );`,
                 name: 'turno'
             }
