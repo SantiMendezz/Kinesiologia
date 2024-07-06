@@ -4,27 +4,27 @@ const path = require('path');
 
 //Implementacion de la ruta principal
 controller.index = (req,res) => {
-    res.sendFile(path.join(__dirname, '../../public/index.html'));
+    res.render('index');
 };
 //Ruta contactanos
 controller.contactanos = (req, res) => {
-    res.sendFile(path.join(__dirname, '../../public/contactanos.html'));
+    res.render('contactanos');
 };
 //Ruta quienesSomos
 controller.quienesSomos = (req,res) => {
-    res.sendFile(path.join(__dirname, '../../public/quienesSomos.html'));
+    res.render('quienesSomos');
 };
 //Ruta register
 controller.register = (req,res) => {
-    res.sendFile(path.join(__dirname, '../../public/register.html'));
+    res.render('register');
 };
-//Ruta login
+//Ruta login => por defecto no le pasamos ningun valor al alert
 controller.login = (req,res) => {
-    res.sendFile(path.join(__dirname, '../../public/login.html'));
+    res.render('login', {alert: false});
 };
 //Ruta admin
 controller.admin = (req,res) => {
-    res.sendFile(path.join(__dirname, '../../public/admin/admin.html'));
+    res.render('./admin/admin');
 };
 
 module.exports = controller;

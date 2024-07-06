@@ -20,6 +20,7 @@ router.get('/admin', controller.admin);
 
 //---Router para las acciones(POST)---
 router.post('/register', authController.register);
+router.post('/login', authController.login);
 
 //Exportamos todo lo que este en router
 module.exports = router;
