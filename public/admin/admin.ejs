@@ -7,5 +7,10 @@
 </head>
 <body>
     <h1>Esta es el área de administración</h1>
+    <h2>Bienvenido:</h2>
+    <% if (usuario) {%>
+        <p><%= usuario.usuario_nombre %></p>
+    <% } %>
+    <a type="button" href="logout">Logout</a>
 </body>
 </html>

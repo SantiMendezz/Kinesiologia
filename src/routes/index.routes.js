@@ -16,11 +16,12 @@ router.get('/register', controller.register);
 //Controlador de login
 router.get('/login', controller.login);
 //Controlador de Admin
-router.get('/admin', controller.admin);
+router.get('/admin', authController.isAuthenticated, controller.admin);
 
 //---Router para las acciones(POST)---
 router.post('/register', authController.register);
 router.post('/login', authController.login);
+router.get('/admin/logout', authController.logout);
 
 //Exportamos todo lo que este en router
 module.exports = router;

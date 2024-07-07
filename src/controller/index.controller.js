@@ -24,7 +24,7 @@ controller.login = (req,res) => {
 };
 //Ruta admin
 controller.admin = (req,res) => {
-    res.render('./admin/admin');
+    res.render('./admin/admin', {usuario:req.usuario});
 };
 
 module.exports = controller;

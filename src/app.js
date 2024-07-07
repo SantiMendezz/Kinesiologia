@@ -33,6 +33,14 @@ app.use(cookieParser());
 const routes = require('./routes/index.routes');
 app.use('/' , routes);
 
+//Para eliminar el cache y que no se pueda volver con el boton de back luego de que hacemos un LOGOUT
+app.use(function(req, res, next) {
+    if(!req.usuario)
+        res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+    next();
+    
+})
+
 // Inicia el servidor
 const PORT = 3000; // Define el puerto en el que se ejecutará la aplicación
 app.listen(PORT, () => {

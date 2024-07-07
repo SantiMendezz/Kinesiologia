@@ -5,6 +5,8 @@ const authController = {};
 //Modulo de encriptacion
 const crypto = require('crypto');
 const secretKey = crypto.randomBytes(32).toString('hex');
+//Convierte funciones de callback en otras que devuelven promesas
+const {promisify} = require('util');
 
 authController.register = async (req, res) => {
     try {
@@ -208,6 +210,30 @@ authController.login = async (req, res) => {
     //     })));
     //     return res.redirect('/login');
     // }
+};
+
+authController.isAuthenticated = async (req, res, next) => {
+    if (req.cookies.jwt) {
+        try {
+            const decodificada = await promisify(jwt.verify)(req.cookies.jwt, secretKey);
+            const [results] = await conexion.query('SELECT * FROM usuario WHERE usuario_id = ?', [decodificada.id]);
+            if(results.length == 0) {
+                return next();
+            }
+            req.usuario = results[0];
+            return next();
+        } catch (error) {
+            console.log(error);
+            return next();
+        }
+    } else {
+        res.redirect('/login');
+    }
+};
+
+authController.logout = async (req, res) => {
+    res.clearCookie('jwt');
+    return  res.redirect('/');
 };
 
 module.exports = authController;
