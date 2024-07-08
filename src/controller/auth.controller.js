@@ -29,7 +29,7 @@ authController.register = async (req, res) => {
         try {
             await connection.query(query, values);
             console.log('Usuario registrado correctamente');
-            res.redirect('/');
+            res.redirect('/login');
         } catch (err) {
             console.error('Error al ejecutar la consulta:', err);
             res.redirect('/');
@@ -129,87 +129,6 @@ authController.login = async (req, res) => {
             ruta: 'login'
         });
     }
-    
-    // try {
-    //     const { email, contrasenia } = req.body;
-
-    //     if (email && contrasenia) {
-    //         const connection = await conexion.getConnection();
-    //         try {
-    //             const [results] = await connection.query('SELECT * FROM usuario WHERE usuario_email = ?', [email]);
-
-    //             if (results.length > 0) {
-    //                 const user = results[0];
-    //                 const isMatch = await bcryptjs.compare(contrasenia, user.usuario_contrasenia);
-    //                 if (isMatch) {
-    //                     const id = user.usuario_id;
-    //                     const token = jwt.sign({ id: id }, secretKey, { expiresIn: '5m' });
-
-    //                     console.log(`TOKEN: ${token} para el usuario ${email}`);
-
-    //                     const cookiesOptions = {
-    //                         expires: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
-    //                         httpOnly: true
-    //                     };
-
-    //                     res.cookie('jwt', token, cookiesOptions);
-    //                     res.cookie('swalMessage', encodeURIComponent(JSON.stringify({
-    //                         title: 'LOGIN Correcto',
-    //                         text: 'Conexión exitosa',
-    //                         icon: 'success',
-    //                         confirmButtonText: 'OK',
-    //                         timer: 800
-    //                     })));
-    //                     return res.redirect('/');
-    //                 } else {
-    //                     res.cookie('swalMessage', encodeURIComponent(JSON.stringify({
-    //                         title: 'Advertencia',
-    //                         text: 'Usuario y/o Contraseña Incorrecta',
-    //                         icon: 'warning',
-    //                         confirmButtonText: 'OK'
-    //                     })));
-    //                     return res.redirect('/login');
-    //                 }
-    //             } else {
-    //                 res.cookie('swalMessage', encodeURIComponent(JSON.stringify({
-    //                     title: 'Advertencia',
-    //                     text: 'Usuario y/o Contraseña Incorrecta',
-    //                     icon: 'warning',
-    //                     confirmButtonText: 'OK'
-    //                 })));
-    //                 return res.redirect('/login');
-    //             }
-    //         } catch (error) {
-    //             console.error('Error al ejecutar la consulta:', error);
-    //             res.cookie('swalMessage', encodeURIComponent(JSON.stringify({
-    //                 title: 'Error',
-    //                 text: 'Ocurrió un error al procesar su solicitud',
-    //                 icon: 'error',
-    //                 confirmButtonText: 'OK'
-    //             })));
-    //             return res.redirect('/login');
-    //         } finally {
-    //             connection.release();
-    //         }
-    //     } else {
-    //         res.cookie('swalMessage', encodeURIComponent(JSON.stringify({
-    //             title: 'Advertencia',
-    //             text: 'Por favor ingrese Usuario y Contraseña!',
-    //             icon: 'warning',
-    //             confirmButtonText: 'OK'
-    //         })));
-    //         return res.redirect('/login');
-    //     }
-    // } catch (error) {
-    //     console.error(error);
-    //     res.cookie('swalMessage', encodeURIComponent(JSON.stringify({
-    //         title: 'Error',
-    //         text: 'Ocurrió un error inesperado',
-    //         icon: 'error',
-    //         confirmButtonText: 'OK'
-    //     })));
-    //     return res.redirect('/login');
-    // }
 };
 
 authController.isAuthenticated = async (req, res, next) => {

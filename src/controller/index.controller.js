@@ -1,6 +1,7 @@
 //Inicializamos el controlador => como un objeto vacio
 const controller = {}
 const path = require('path');
+const conexion = require('../db/conexion.db');
 
 //Implementacion de la ruta principal
 controller.index = (req,res) => {
@@ -21,10 +22,6 @@ controller.register = (req,res) => {
 //Ruta login => por defecto no le pasamos ningun valor al alert
 controller.login = (req,res) => {
     res.render('login', {alert: false});
-};
-//Ruta admin
-controller.admin = (req,res) => {
-    res.render('./admin/admin', {usuario:req.usuario});
 };
 
 module.exports = controller;
