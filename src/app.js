@@ -19,9 +19,6 @@ app.use(express.static(path.join(__dirname, '../public')));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// Set variables de entorno
-// dotenv.config({path:'env/.env'});
-
 //Cookies
 app.use(cookieParser());
 
@@ -43,6 +40,7 @@ app.use(function(req, res, next) {
 })
 
 // Inicia el servidor
-app.listen(PORT, () => {
-    console.log(`Servidor ejecutándose en http://localhost:${PORT}`);
-});
+// app.listen(PORT, () => {
+//     console.log(`Servidor ejecutándose en http://localhost:${PORT}`);
+// });
+app.listen(PORT);

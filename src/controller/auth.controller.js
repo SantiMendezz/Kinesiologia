@@ -58,7 +58,7 @@ authController.login = async (req, res) => {
             })
         }
 
-        console.log(`Contraseña ingresada: ${pass}`);
+        //console.log(`Contraseña ingresada: ${pass}`);
         
         //Mysql2 -> no maneja callbacks pero si promesas
         //Consulta usando promesas
@@ -77,7 +77,7 @@ authController.login = async (req, res) => {
             });
         }
 
-        console.log(`Contraseña ingresada: ${pass} y contraseña almacenada: ${results[0].usuario_contrasenia}`);
+        //console.log(`Contraseña ingresada: ${pass} y contraseña almacenada: ${results[0].usuario_contrasenia}`);
 
         const passwordMatch = await bcryptjs.compare(pass, results[0].usuario_contrasenia);
 
@@ -97,7 +97,7 @@ authController.login = async (req, res) => {
         //Inicio de sesión OK
         const id = results[0].usuario_id;
         const token = jwt.sign({id:id}, secretKey, {expiresIn: '7d'});
-        console.log(`Token ${token} para el usuario ${email}`);
+        //console.log(`Token ${token} para el usuario ${email}`);
 
         //Opciones de cookie
         const cookiesOptions = {

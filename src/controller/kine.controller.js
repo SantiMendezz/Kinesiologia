@@ -7,7 +7,7 @@ kineController.list = async (req, res) => {
         const connection = await conexion.getConnection();
         try {
             const [results] = await connection.query(query);
-            console.log(results);
+            //console.log(results);
             // Renderizar la vista EJS y pasar los resultados
             res.render('./admin/admin', { usuario: req.usuario, data: results });
         } catch (error) {
