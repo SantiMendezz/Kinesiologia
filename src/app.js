@@ -22,9 +22,11 @@ app.use(express.json());
 //Cookies
 app.use(cookieParser());
 
-(async () => {
-    await initializeDatabase();
-})();
+//Lineas comentadas para uso en railway
+//Descomentar las siguientes lineas para poder usar la BD de manera local
+// (async () => {
+//     await initializeDatabase();
+// })();
 
 //ROUTES
 // app.use(require('./routes/index.routes.js')); // Otra forma de importar las rutas

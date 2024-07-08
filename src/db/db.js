@@ -1,12 +1,13 @@
 const mysql = require('mysql2/promise');
+const {DB_HOST,DB_USER,DB_PASS,DB_PORT} = require('./config');
 
 async function createDatabase(databaseName) {
     try {
         const connection = await mysql.createConnection({
-            host: 'localhost',
-            user: 'root',
-            password: '123456',
-            port: 3307
+            host: DB_HOST,
+            user: DB_USER,
+            password: DB_PASS,
+            port: DB_PORT
         });
         await connection.query(`CREATE DATABASE IF NOT EXISTS ${databaseName}`);
         console.log(`Base de datos ${databaseName} asegurada - Creada exitosamente`);
@@ -57,10 +58,10 @@ async function initializeDatabase() {
 
         // Crear una nueva conexión utilizando la base de datos
         connection = await mysql.createConnection({
-            host: 'localhost',
-            user: 'root',
-            password: '123456',
-            port: 3307,
+            host: DB_HOST,
+            user: DB_USER,
+            password: DB_PASS,
+            port: DB_PORT,
             database: databaseName
         });
 

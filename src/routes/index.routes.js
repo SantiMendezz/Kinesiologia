@@ -9,7 +9,7 @@ const kineController = require('../controller/kine.controller');
 //Controlador de la ruta principal
 router.get('/', controller.index);
 //Controlador de la ruta contactanos
-router.get('/contactanos', controller.contactanos);
+// router.get('/contactanos', controller.contactanos);
 //Controlador de la ruta quienesSomos
 router.get('/quienesSomos', controller.quienesSomos);
 //Controlador de la ruta de registro

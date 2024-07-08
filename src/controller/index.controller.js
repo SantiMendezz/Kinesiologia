@@ -8,9 +8,9 @@ controller.index = (req,res) => {
     res.render('index');
 };
 //Ruta contactanos
-controller.contactanos = (req, res) => {
-    res.render('contactanos');
-};
+// controller.contactanos = (req, res) => {
+//     res.render('contactanos');
+// };
 //Ruta quienesSomos
 controller.quienesSomos = (req,res) => {
     res.render('quienesSomos');
